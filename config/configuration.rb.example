@@ -1,0 +1,17 @@
+module Allocation; class Configuration
+
+  def trello_developer_public_key
+    'some secret'
+  end
+
+  def trello_member_token
+    'top secret'
+  end
+
+  def root
+    File.expand_path("../", File.dirname(__FILE__))
+  end
+
+end; end
+
+CONFIG = Allocation::Configuration.new
