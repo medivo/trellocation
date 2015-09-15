@@ -12,6 +12,7 @@ class Trello::Card
 
   def tag
     return "empty" if tag_string.blank?
+    return tag_string.split(",").first.downcase if tag_string.include?(",")
     tag_string.downcase.strip
   end
 

@@ -14,6 +14,10 @@ module Trellocation; class List
     cards.select{ |card| card.has_label? }
   end
 
+  def card_labels
+    cards_with_labels.map{ |each| each.card_labels.first["name"] }.uniq.sort
+  end
+
   def generate_output
     f = File.open("#{Date::MONTHNAMES[Date.today.month-1]}_#{Date.today.year}_#{list.board.name}_report.markdown", "w+")
     f.write("#{Date::MONTHNAMES[Date.today.month-1]} #{Date.today.year} #{list.board.name} report\n")
@@ -79,6 +83,23 @@ module Trellocation; class List
 
     cards_with_labels.each_with_index do |card, index|
       f.write("|#{index+1}|#{card.points}|#{card.name}|#{card.short_id}|#{card.short_url}|#{card.label}|\n")
+    end
+
+    f.write("\nlabels breakdown\n")
+    f.write("---\n")
+    f.write("|label|points|percentage of work|\n")
+    f.write("|---|---|---|\n")
+
+    card_labels.each do |label|
+      total = 0
+      cards_with_labels.each do |card|
+        if card.card_labels.first["name"] == label
+          total += card.points
+        end
+      end
+      percentage = total.to_f/total_points * 1000
+      percentage = percentage.truncate/10.0
+      f.write("|#{label}|#{total}|#{percentage}|\n")
     end
 
 
