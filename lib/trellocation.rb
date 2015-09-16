@@ -1,6 +1,7 @@
 require 'trello'
 require 'pry'
 require 'active_support/all'
+require 'active_record'
 
 def require_all(pattern)
   Dir.glob("#{CONFIG.root}/#{pattern}/**/*.rb").sort.each { |path| require path }
